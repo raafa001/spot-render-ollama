@@ -1,0 +1,19 @@
+# Local Patch for Ollama (CPU only, no GPU)
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama
+  namespace: spot-ai
+spec:
+  template:
+    spec:
+      containers:
+        - name: ollama
+          resources:
+            requests:
+              memory: "4Gi"
+              cpu: "1"
+            limits:
+              memory: "8Gi"
+              cpu: "2"

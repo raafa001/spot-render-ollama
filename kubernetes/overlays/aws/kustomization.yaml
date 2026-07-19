@@ -1,0 +1,29 @@
+# Spot Render Ollama - AWS Overlay
+# =============================================================================
+# PT-BR: Overlay para deploy na AWS com GPU (EKS + NVIDIA)
+# EN-US: AWS overlay for GPU deployment (EKS + NVIDIA)
+# =============================================================================
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: spot-ai
+
+resources:
+  - ../../base/k8s-ollama.yaml
+
+patchesStrategicMerge:
+  - ollama-aws-patch.yaml
+
+configMapGenerator:
+  - name: ollama-config
+    behavior: replace
+    data:
+      OLLAMA_HOST: "0.0.0.0:11434"
+      OLLAMA_MODELS: "/models"
+      OLLAMA_NUM_PARALLEL: "4"
+      OLLAMA_MAX_LOADED_MODELS: "2"
+
+commonLabels:
+  environment: aws
+  spot.ai/managed: "true"

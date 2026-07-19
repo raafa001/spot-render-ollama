@@ -1,0 +1,29 @@
+# Spot Render Ollama - Local Overlay
+# =============================================================================
+# PT-BR: Overlay para teste local (sem GPU, Docker Desktop K8s)
+# EN-US: Local overlay for testing (no GPU, Docker Desktop K8s)
+# =============================================================================
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: spot-ai
+
+resources:
+  - ../../base/k8s-ollama.yaml
+
+patchesStrategicMerge:
+  - ollama-local-patch.yaml
+
+configMapGenerator:
+  - name: ollama-config
+    behavior: replace
+    data:
+      OLLAMA_HOST: "0.0.0.0:11434"
+      OLLAMA_MODELS: "/models"
+      OLLAMA_NUM_PARALLEL: "2"
+      OLLAMA_MAX_LOADED_MODELS: "1"
+
+commonLabels:
+  environment: local
+  spot.ai/managed: "true"
