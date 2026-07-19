@@ -94,11 +94,11 @@ spec:
                   key: OLLAMA_MODEL
           resources:
             requests:
-              memory: "6Gi"
-              cpu: "2"
+              memory: "4Gi"
+              cpu: "1"
             limits:
-              memory: "12Gi"
-              cpu: "4"
+              memory: "8Gi"
+              cpu: "2"
           volumeMounts:
             - name: models
               mountPath: /models
