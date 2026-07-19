@@ -54,7 +54,7 @@ spec:
   storageClassName: hostpath
   resources:
     requests:
-      storage: 20Gi
+      storage: 10Gi
 
 ---
 # Ollama Deployment
@@ -94,11 +94,11 @@ spec:
                   key: OLLAMA_MODEL
           resources:
             requests:
+              memory: "2Gi"
+              cpu: "500m"
+            limits:
               memory: "4Gi"
               cpu: "1"
-            limits:
-              memory: "8Gi"
-              cpu: "2"
           volumeMounts:
             - name: models
               mountPath: /models
@@ -170,7 +170,7 @@ spec:
     kind: Deployment
     name: ollama
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 2
   metrics:
     - type: Resource
       resource:
