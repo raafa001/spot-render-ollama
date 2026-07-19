@@ -92,6 +92,20 @@ spec:
                 configMapKeyRef:
                   name: ollama-env
                   key: OLLAMA_MODEL
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Waiting for Ollama to be ready..."
+              sleep 5
+              echo "Checking if model ${OLLAMA_MODEL} exists..."
+              if ! ollama list | grep -q "${OLLAMA_MODEL}"; then
+                echo "Model not found. Pulling ${OLLAMA_MODEL}..."
+                ollama pull ${OLLAMA_MODEL}
+              else
+                echo "Model ${OLLAMA_MODEL} already exists."
+              fi
+              echo "Starting Ollama server..."
+              ollama serve
           resources:
             requests:
               memory: "2Gi"
